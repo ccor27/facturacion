@@ -16,25 +16,29 @@ import javax.swing.JPanel;
  */
 public class FacturaView extends javax.swing.JFrame {
 
-    
-  
     /**
      * Creates new form FacturaView
      */
     public FacturaView() {
-        
+
         super("factura");
 
-        
         initComponents();
-        
-        VistaInsertar ventana =  new VistaInsertar();
         this.setLayout(new FlowLayout());
-        this.add(ventana,BorderLayout.BEFORE_FIRST_LINE);
-        this.pack();
+
+        VistaInsertar ventanaInsertar = new VistaInsertar();
+        VistaListado ventanaListado = new VistaListado();
+        VistaEditar ventanaEditar = new VistaEditar();
+        VistaTotales ventanaTotales = new VistaTotales();
+
         
+        this.add(ventanaInsertar);
+        this.add(ventanaListado);
+        this.add(ventanaEditar);
+        this.add(ventanaTotales);
+        this.pack();
+
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,7 +59,7 @@ public class FacturaView extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -82,9 +86,9 @@ public class FacturaView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new FacturaView().setVisible(true);
-                
+
             }
         });
     }

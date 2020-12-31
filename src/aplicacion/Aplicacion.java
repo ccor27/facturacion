@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package aplicacion;
 
 import vista.FacturaView;
 import vista.VistaInsertar;
@@ -12,7 +12,7 @@ import vista.VistaInsertar;
  *
  * @author cristian
  */
-public class NewMain {
+public class Aplicacion {
 
     /**
      * @param args the command line arguments
