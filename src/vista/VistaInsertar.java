@@ -5,16 +5,24 @@
  */
 package vista;
 
+import controlador.VistaInsertarController;
+import javax.swing.JOptionPane;
+import modelo.Factura;
+
 /**
  *
  * @author cristian
  */
 public class VistaInsertar extends javax.swing.JPanel {
 
+    VistaInsertarController controlador;
+
     /**
      * Creates new form v
      */
-    public VistaInsertar() {
+    public VistaInsertar( VistaListado vistaListado,VistaEditar ventanaEditar, Factura factura) {
+        controlador = new VistaInsertarController(factura, vistaListado, ventanaEditar);
+
         initComponents();
     }
 
@@ -45,6 +53,11 @@ public class VistaInsertar extends javax.swing.JPanel {
         jLabel3.setText("Cantidad");
 
         btnAnadir.setText("Añadir");
+        btnAnadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnadirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -61,9 +74,8 @@ public class VistaInsertar extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtConcepto, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                        .addComponent(txtCantidad)))
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                    .addComponent(txtCantidad))
                 .addGap(18, 18, 18)
                 .addComponent(btnAnadir)
                 .addContainerGap(31, Short.MAX_VALUE))
@@ -108,6 +120,48 @@ public class VistaInsertar extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
+        
+        if (validarCamposTexto()) {
+            
+            String concepto = txtConcepto.getText();
+            double precioUnidad = Double.parseDouble(txtPrecio.getText().trim());
+            int cantidad = Integer.parseInt(txtCantidad.getText().trim());
+            
+         controlador.crearItem(concepto, precioUnidad, cantidad);
+         controlador.llenarTabla();
+         controlador.agregarItemsComboBox();
+         vaciarCamposTexto();
+         
+         //JOptionPane.showMessageDialog(null, "se agrego correctamente");
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "debe llenar los campos antes de insertar un item");
+        }
+    }//GEN-LAST:event_btnAnadirActionPerformed
+
+    public boolean validarCamposTexto(){
+        
+        boolean centinela;
+        
+        if (txtConcepto.getText().equalsIgnoreCase("") || txtPrecio.getText().equalsIgnoreCase("") ||
+                 txtCantidad.getText().equalsIgnoreCase("")) {
+            
+            centinela = false;
+            
+        } else {
+            centinela=true;
+        }
+        
+        return centinela;
+    }
+    
+    public void vaciarCamposTexto(){
+        txtCantidad.setText("");
+        txtConcepto.setText("");
+        txtPrecio.setText("");
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnadir;

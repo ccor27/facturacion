@@ -5,16 +5,23 @@
  */
 package vista;
 
+import controlador.VistaTotalesController;
+import modelo.Factura;
+import modelo.Item;
+
 /**
  *
  * @author cristian
  */
-public class VistaTotales extends javax.swing.JPanel {
+public class VistaTotal extends javax.swing.JPanel {
 
     /**
-     * Creates new form VistaTotales
+     * Creates new form VistaTotal
      */
-    public VistaTotales() {
+    VistaTotalesController controlador;
+    
+    public VistaTotal( Factura factura) {
+        controlador = new VistaTotalesController(factura);
         initComponents();
     }
 
@@ -120,6 +127,28 @@ public class VistaTotales extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void calculos(){
+        
+        int numeroItems = 0;
+        double subTotal = 0;
+        double iva = 0;
+        double Total = 0;
+        
+        for (int i = 0; i < controlador.obtenerListaItem().size(); i++) {
+            
+            Item item = controlador.obtenerListaItem().get(i);
+            numeroItems += item.getCantidad();
+            subTotal += item.getTotal();
+        }
+        
+        iva = (subTotal*15)/100;
+        Total = subTotal+iva;
+        
+        txtNumeroItems.setText(numeroItems+"");
+        txtSubtotal.setText(subTotal+"");
+        txtIva.setText(iva+"");
+        txtTotal.setText(Total+"");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

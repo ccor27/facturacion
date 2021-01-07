@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package service;
+
+import modelo.Item;
 
 /**
  *
  * @author cristian
  */
-public class Items {
-    
+public interface Observador {
+ 
+  void notificar(Item item);
 }

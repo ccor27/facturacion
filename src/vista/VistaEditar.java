@@ -5,6 +5,11 @@
  */
 package vista;
 
+import controlador.VistaEditarController;
+import javax.swing.JOptionPane;
+import modelo.Factura;
+import modelo.Item;
+
 /**
  *
  * @author cristian
@@ -14,7 +19,11 @@ public class VistaEditar extends javax.swing.JPanel {
     /**
      * Creates new form VistaEditar
      */
-    public VistaEditar() {
+    VistaEditarController controlador;
+ 
+
+    public VistaEditar(VistaListado vistaListado, Factura factura) {
+        controlador = new VistaEditarController(factura,vistaListado);
         initComponents();
     }
 
@@ -41,7 +50,6 @@ public class VistaEditar extends javax.swing.JPanel {
 
         jLabel1.setText("Item");
 
-        ComBoxItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         ComBoxItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ComBoxItemActionPerformed(evt);
@@ -59,8 +67,18 @@ public class VistaEditar extends javax.swing.JPanel {
         jLabel3.setText("Cantidad");
 
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -139,6 +157,73 @@ public class VistaEditar extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioActionPerformed
 
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+
+        if (validarCamposTexto()) {
+
+            String concepto = (String) ComBoxItem.getSelectedItem();
+
+            if (concepto != null) {
+
+                Item item = controlador.obtenerItem(concepto);
+                double precioNuevo = Double.parseDouble(txtPrecio.getText().trim());
+                int cantidadNueva = Integer.parseInt(txtCantidad.getText().trim());
+                controlador.mofificarItem(item.getConcepto(), precioNuevo, cantidadNueva);
+                JOptionPane.showMessageDialog(null, "modificacion con exito");
+                vaciarCampos();
+                controlador.llenarTabla();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "debe de llenar todos los campos");
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        
+        
+            
+            String concepto = (String) ComBoxItem.getSelectedItem();
+           
+            if (concepto != "") {
+                
+                controlador.eliminarItem(concepto);
+                vaciarCampos();
+                controlador.llenarTabla();
+                agregarItemsComboBox();
+                JOptionPane.showMessageDialog(null, "eliminacion con exito");
+            }else {
+            JOptionPane.showMessageDialog(null, "debe de llenar todos los campos");
+        }
+         
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    public boolean validarCamposTexto() {
+
+        if (txtCantidad.getText().equalsIgnoreCase("") || txtPrecio.getText().equalsIgnoreCase("")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void agregarItemsComboBox() {
+
+        ComBoxItem.removeAllItems();
+        
+        if (controlador.obtenerItems() != null) {
+
+            for (int i = 0; i < controlador.obtenerItems().size(); i++) {
+                ComBoxItem.addItem(controlador.obtenerItems().get(i).getConcepto());
+            }
+        }
+
+    }
+    
+    public void vaciarCampos(){
+        txtCantidad.setText("");
+        txtPrecio.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComBoxItem;

@@ -5,6 +5,12 @@
  */
 package vista;
 
+import controlador.VistaListadoController;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import modelo.Factura;
+import modelo.Item;
+
 /**
  *
  * @author cristian
@@ -14,9 +20,48 @@ public class VistaListado extends javax.swing.JPanel {
     /**
      * Creates new form VistaListado
      */
-    public VistaListado() {
+     DefaultTableModel model = new DefaultTableModel();
+     VistaListadoController controlador;
+     VistaTotal vistaTotal;
+    
+    public VistaListado(VistaTotal vistaTotal,  Factura factura) {
+        controlador = new VistaListadoController(factura);
+        this.vistaTotal = vistaTotal;
         initComponents();
+        model.addColumn("Concepto");
+        model.addColumn("Precio");
+        model.addColumn("Cantidad");
+        model.addColumn("Total");
+        this.tblListaFacturacion.setModel(model);
+        
     }
+    
+    public void llenarTabla(){            
+          //  System.out.println("entro a la lista");
+            if (controlador.obtenerListaItem() != null) {
+                //System.out.println(controlador.obtenerListaItem());
+                int tamano = controlador.obtenerListaItem().size();
+                DefaultTableModel modelDefault = new DefaultTableModel(new String[]{"Concepto","Precio","Cantidad","Total"}, tamano);
+                tblListaFacturacion.setModel(modelDefault);
+                
+                TableModel modeloDatos = tblListaFacturacion.getModel();
+                
+                for (int i = 0; i < tamano; i++) {
+                    Item item = controlador.obtenerListaItem().get(i);
+                    
+                    modeloDatos.setValueAt(item.getConcepto(), i, 0);
+                    modeloDatos.setValueAt(item.getPrecio(), i, 1);
+                    modeloDatos.setValueAt(item.getCantidad(), i, 2);
+                    modeloDatos.setValueAt(item.getTotal(), i, 3);
+                    
+                }
+                vistaTotal.calculos();
+            }
+            
+            
+        
+    }
+            
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JPanel;
+import modelo.Factura;
 
 /**
  *
@@ -22,14 +23,17 @@ public class FacturaView extends javax.swing.JFrame {
     public FacturaView() {
 
         super("factura");
-
+        Factura factura = new Factura();
+        
+        
         initComponents();
         this.setLayout(new FlowLayout());
 
-        VistaInsertar ventanaInsertar = new VistaInsertar();
-        VistaListado ventanaListado = new VistaListado();
-        VistaEditar ventanaEditar = new VistaEditar();
-        VistaTotales ventanaTotales = new VistaTotales();
+        VistaTotal ventanaTotales = new VistaTotal(factura);
+        VistaListado ventanaListado = new VistaListado(ventanaTotales, factura);
+        VistaEditar ventanaEditar = new VistaEditar(ventanaListado, factura);
+        VistaInsertar ventanaInsertar = new VistaInsertar(ventanaListado, ventanaEditar, factura);
+        
 
         
         this.add(ventanaInsertar);
@@ -37,6 +41,8 @@ public class FacturaView extends javax.swing.JFrame {
         this.add(ventanaEditar);
         this.add(ventanaTotales);
         this.pack();
+        
+        
 
     }
 
